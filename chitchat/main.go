@@ -29,20 +29,20 @@ func handlerWithLog() http.Handler {
     logger.Printf("Server is starting...")
 
     return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-                 start := time.Now()
+        start := time.Now()
 
-                 mux.ServeHTTP(w, r)
+        mux.ServeHTTP(w, r)
 
-                 // log request by who(IP address)
-                 requesterIP := r.RemoteAddr
+        // log request by who(IP address)
+        requesterIP := r.RemoteAddr
 
-                 log.Printf(
-                         "%s\t\t%s\t\t%s\t\t%v",
-                         r.Method,
-                         r.RequestURI,
-                         requesterIP,
-                         time.Since(start),
-                 )
+        log.Printf(
+                "%s\t\t%s\t\t%s\t\t%v",
+                r.Method,
+                r.RequestURI,
+                requesterIP,
+                time.Since(start),
+        )
     })
 }
 
@@ -56,9 +56,17 @@ func index(w http.ResponseWriter, r *http.Request) {
     templates := template.Must(template.ParseFiles(files...))
     // threads, err := data.Threads();
 
+    cookie := http.Cookie{
+        Name: "_cooki2e",
+        Value: "UNIQUEVALUECharlie",
+        HttpOnly: true,
+    }
+    // cookie must be set before body starts being written. Headers cannot be changed after body
+    http.SetCookie(w, &cookie)
+
     err := templates.ExecuteTemplate(w, "layout", "World!")
 
     if err != nil {
-      fmt.Println("Error: ", err);
+        fmt.Println("Error: ", err);
     }
 }
