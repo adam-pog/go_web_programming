@@ -10,9 +10,6 @@ import (
 )
 
 func main() {
-    // files := http.FileServer(http.Dir("public"))
-    // mux.Handle("/static", http.StripPrefix("/static/", files))
-
     server := &http.Server{
         Addr: "0.0.0.0:8081",
         Handler: handlerWithLog(),
@@ -23,6 +20,9 @@ func main() {
 
 func handlerWithLog() http.Handler {
     mux := http.NewServeMux()
+    files := http.FileServer(http.Dir("public"))
+    mux.Handle("/static/", http.StripPrefix("/static/", files))
+
     mux.HandleFunc("/", index)
 
     logger := log.New(os.Stdout, "http: ", log.LstdFlags)
