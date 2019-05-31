@@ -6,6 +6,7 @@ import (
     "os"
     "log"
     "time"
+    "fmt"
 )
 
 func main() {
@@ -13,7 +14,7 @@ func main() {
     // mux.Handle("/static", http.StripPrefix("/static/", files))
 
     server := &http.Server{
-        Addr: "0.0.0.0:8080",
+        Addr: "0.0.0.0:8081",
         Handler: handlerWithLog(),
     }
     // fmt.Println("Serving...")
@@ -55,7 +56,9 @@ func index(w http.ResponseWriter, r *http.Request) {
     templates := template.Must(template.ParseFiles(files...))
     // threads, err := data.Threads();
 
-    // if err == nil {
-    templates.ExecuteTemplate(w, "layout", "World!")
-    // }
+    err := templates.ExecuteTemplate(w, "layout", "World!")
+
+    if err != nil {
+      fmt.Println("Error: ", err);
+    }
 }
