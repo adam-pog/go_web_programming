@@ -7,6 +7,7 @@ import (
     "log"
     "time"
     "fmt"
+    "github.com/adam-pog/go_web_programming/chitchat/data"
 )
 
 func main() {
@@ -64,9 +65,9 @@ func index(w http.ResponseWriter, r *http.Request) {
     // cookie must be set before body starts being written. Headers cannot be changed after body
     http.SetCookie(w, &cookie)
 
-    err := templates.ExecuteTemplate(w, "layout", "World!")
-
-    if err != nil {
-        fmt.Println("Error: ", err);
+    threads, err := data.Threads(); if err == nil {
+      templates.ExecuteTemplate(w, "layout", threads)
+    } else {
+      fmt.Println(err)
     }
 }
