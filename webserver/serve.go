@@ -27,7 +27,9 @@ func log(handler http.HandlerFunc) http.HandlerFunc {
 }
 
 func hello(w http.ResponseWriter, r *http.Request){
-  fmt.Fprintf(w, "hello")
+  r.ParseForm()
+  str := fmt.Sprintf("body: %s", r.Form["page"])
+  fmt.Fprintln(w,str)
 }
 
 func world(w http.ResponseWriter, r *http.Request){
